@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Exercício 3</title>
+    <script src="scripts/HUD.js"></script>
+    <script src="scripts/Player.js"></script>
+    <script src="scripts/Terrain.js"></script>
+    <script src="scripts/Block.js"></script>
+</head>
+
+<body>
+    <h1>Exercício 3</h1>
+    <canvas width="640" height="480"></canvas>
+    <script>
+        //variables
+        var screen = document.getElementsByTagName("canvas")[0];
+        var ctx = screen.getContext("2d");
+        var dt = prevTime = 0;
+        var gravity = 10;
+        var player = new Player(screen.width / 2, 0);
+        var terrain = new Terrain(screen.width, screen.height);
+        //gameController
+        /*
+            state:
+                0 - Menu
+                1 - In game
+                2 - Game Over
+        */
+        var state = 0;
+        var highScore = 0;
+        var hud = new HUD(ctx.width);
+
+        //functions
+        function clearScreen() {
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, screen.width, screen.height);
+            ctx.strokeStyle = "black";
+            ctx.strokeRect(0, 0, screen.width, screen.height);
+        }
+        function step(t) {
+            dt = (t - prevTime) / 100;
+            clearScreen();
+            player.move(dt, gravity);
+            player.boundaries(screen.height);
+            terrain.moveAndBoundaries(dt, player.y, screen.height);
+            if (player.jumping == true && player.y >= player.yJump - player.maxH - player.h) {
+                player.jumping = false;
+            }
+            player.draw(ctx);
+            terrain.draw(ctx);
+            hud.draw(ctx, 0, 100, player.lifes);
+            prevTime = t;
+            requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+
+        addEventListener("keydown", function (e) {
+            if (e.keyCode == 39) {
+                vx = 35;
+            } else if (e.keyCode == 37) {
+                vx = -35;
+            } else if (e.keyCode == 40) {
+                vy = 35;
+            } else if (e.keyCode == 38) { //up
+                if (player.jumping == false) {
+                    player.yJump = player.y;
+                    player.jumping = true;
+                    player.vy = -50;
+                    
+                }
+            }
+        });
+        addEventListener("keyup", function (e) {
+            if (e.keyCode == 39) {
+
+            } else if (e.keyCode == 37) {
+
+            } else if (e.keyCode == 40) {
+
+            } else if (e.keyCode == 38) { //up
+            }
+        });
+    </script>
+</body>
+
+</html>
