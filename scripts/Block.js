@@ -5,8 +5,8 @@ function Block(x, y, w, h) {
     this.y = y;
     this.w = w;
     this.h = h;
+    this.h0 = h;
     this.vx = -10;
-    this.changes = 0;
 }
 
 Block.prototype.draw = function (ctx) {
@@ -14,25 +14,20 @@ Block.prototype.draw = function (ctx) {
     ctx.fillRect(this.x, this.y, this.w, this.h);
 }
 
-Block.prototype.move = function (dx) {
+Block.prototype.move = function (dt) {
     this.x = this.x + this.vx * dt;
 }
-Block.prototype.boundaries = function (w, h, playerY, scH) {
-    if (this.x + this.w <= 0) {
-        this.x = w + this.w;//coloca antes da tela na direita
-        if (this.changes == 0) {
-            if (playerY > this.h) {
-                this.h = Math.random() * (playerY - this.h) + this.h;
-            } else {
-                this.h = Math.random() * (this.h - playerY) + playerY;
-            }
-            this.h -= 50;
-            if (this.y > 40)
-                this.y = scH - this.h;
-        }
-        this.changes++;
-    } else if (this.x + this.w > 0 && this.x + this.w < w) {
-        if (this.change > 0)
-            this.change = 0;
-    }
+Block.prototype.boundaries = function (w, h) {
+    if (this.x + this.w <= 0)
+        return true;
+    else
+        return false;
+}
+Block.prototype.checkCollision = function (target){
+    if (target.x + target.w < this.x) return false;
+    if (target.x > this.x + this.w) return false;
+    if (target.y + target.h < this.y) return false;
+    if (target.y > this.y + this.h) return false;
+    return true;
+
 }

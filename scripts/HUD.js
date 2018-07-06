@@ -2,20 +2,16 @@ function HUD(screenWidth) {
     this.x = 0;
     this.y = 0;
     this.screenWidth = screenWidth;
-    //lifes
-    this.spriteLife = new Image();
-    this.spriteLife.src="assets/heart.png";
-    //ctx.drawImage(this.sprite,this.x, this.y,this.w, this.h);
 
 }
 
-HUD.prototype.draw = function (ctx, score, highScore, lifes) {
-    //Lifes: S2 S2 S2  Score: XX HighScore: XX
-    ctx.fillRect(1, 1, this.screenWidth - 2, 48);
+HUD.prototype.draw = function (ctx, score, highscore) {
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, this.screenWidth , 40);
+    ctx.strokeStyle = "black";
+    ctx.strokeRect(1, 1, this.screenWidth-1, 39);
     ctx.font = "32px Arial";
     ctx.fillStyle = "black";
-    ctx.fillText("Score: " + score, 550, 30);
-    ctx.fillText("High Score: " + highScore, 750, 30);
-    ctx.fillText("Lifes: ", 2, 32);
-    ctx.drawImage(this.spriteLife, Math.abs(lifes-3)*(this.spriteLife.width/3),0, (this.spriteLife.width/3), this.spriteLife.height, 80, 4, 32, 32);
+    ctx.fillText("Score: " + score, 10, 30);
+    ctx.fillText("High Score: " + highscore, 350, 30);
 }
